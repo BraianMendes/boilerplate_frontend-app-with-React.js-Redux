@@ -8,7 +8,7 @@ import Profile from "./pages/ProfilePage";
 import PasswordForgotPage from './pages/password/PasswordForgotPage';
 import PasswordResetPage from './pages/password/PasswordResetPage';
 
-
+ 
 const isLoggedIn = () => {
   return localStorage.getItem('TOKEN_KEY') != null;
 };
