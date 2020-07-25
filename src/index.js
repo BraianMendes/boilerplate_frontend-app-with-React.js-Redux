@@ -4,11 +4,29 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+// Redux
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { Provider } from "react-redux";
+import reducers from "./redux/reducers";
+import logger from "redux-logger";
+
+var middlewares = null;
+
+// If in Development use Logger
+if (process.env.REACT_APP_IS_PRODUCTION === "1") {
+  middlewares = applyMiddleware(thunk);
+} else {
+  middlewares = applyMiddleware(thunk, logger);
+}
+
+const store = createStore(reducers, middlewares);
+
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </Provider>,
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

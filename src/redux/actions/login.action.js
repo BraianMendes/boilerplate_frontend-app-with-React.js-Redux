@@ -7,6 +7,8 @@ import {
   import { httpClient } from "./../utils/HttpClient";
   import jwt from "jsonwebtoken";
   import swal from "sweetalert";
+
+
   export const setLoginStateToFetching = () => ({
     type: LOGIN_FETCHING,
   });
@@ -20,6 +22,10 @@ import {
     payload,
   });
   
+
+  // Function called login taking value and history as parameters and then navigate out from the login component. 
+  // We use the dispatch function in order to change the login state and add the changed state data to the store.
+
   // Called by Login Component
   export const login = (value, history) => {
     return async (dispatch) => {
@@ -47,13 +53,13 @@ import {
   };
   
   export const isLoggedIn = () => {
-    let token = localStorage.getItem(server.TOKEN_KEY);
+    let token = localStorage.getItem(server.TOKEN_KEY);    
   
-    if (token) {
+    if (token && token != undefined) {
       var decodedToken = jwt.decode(token, { complete: true });
       var dateNow = new Date();
   
-      if (decodedToken.exp < dateNow.getTime()) {
+      if (decodedToken.exp <= dateNow.getTime()) {
         return false;
       } else {
         return true;
