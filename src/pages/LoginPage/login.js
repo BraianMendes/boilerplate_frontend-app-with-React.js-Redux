@@ -1,70 +1,67 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import * as loginActions from "../../redux/actions/login.action";
+import { server } from "../../redux/constants";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .min(2, "username is Too Short!")
     .max(50, "username is Too Long!")
     .required("Username is Required"),
-  password: Yup.string().required("Password is required")
+  password: Yup.string().required("Password is required"),
 });
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
+const Login = (props) => {
+  const dispatch = useDispatch();
+  const loginReducer = useSelector(({ loginReducer }) => loginReducer);
 
-    this.state = {
-      alert: null
-    };
-  }
-
-  componentDidMount() {
-    // Prevent Logged In User from Visiting the Login Page
-    // Every time a user tries to visit the login page, we check whether the token is present. If yes, we return the user to the last visited page.
-    if (localStorage.getItem("TOKEN_KEY") != null) {
-      return this.props.history.push('/dashboard');
+  useEffect(() => {
+    if (localStorage.getItem(server.TOKEN_KEY) != null) {
+      return props.history.push("/dashboard");
     }
-    let notify = this.props.match.params["notify"]
-    if(notify !== undefined){
-      if(notify == 'error'){
-        swal("Activation Fail please try again !", '', "error")
-      }else if(notify == 'success'){
-        swal("Activation Success your can login !", '', "success")
+    let notify = props.match.params["notify"];
+    if (notify !== undefined) {
+      if (notify == "error") {
+        swal("Activation Fail please try again !", "", "error");
+      } else if (notify == "success") {
+        swal("Activation Success your can login !", "", "success");
       }
-     
     }
-  }
+  }, []);
 
-  submitForm = (values, history) => {
+  function submitForm(values, history) {
     axios
       .post(process.env.REACT_APP_API_URL + "login", values)
-      .then(res => {
+      .then((res) => {
         if (res.data.result === "success") {
           localStorage.setItem("TOKEN_KEY", res.data.token);
-          swal("Success!", res.data.message, "success").then(value => {
+          swal("Success!", res.data.message, "success").then((value) => {
             history.push("/dashboard");
           });
         } else if (res.data.result === "error") {
           swal("Error!", res.data.message, "error");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         return swal("Error!", error.message, "error");
       });
-  };
-  showForm = ({
+  }
+
+  const showForm = ({
     values,
     errors,
     touched,
     handleChange,
     handleSubmit,
     setFieldValue,
-    isSubmitting
+    isSubmitting,
   }) => {
     return (
       <form onSubmit={handleSubmit}>
@@ -139,47 +136,46 @@ class Login extends Component {
     );
   };
 
-  render() {
-    return (
-      <div class="login-page">
-        <div className="register-box">
-          <div className="register-logo">
-            <a href="../../index2.html">
-              <b>Basic</b>POS
-            </a>
-          </div>
-          <div className="card">
-            <div className="card-body register-card-body">
-              <p className="login-box-msg">Sign in to start your session</p>
-
-              <Formik
-                initialValues={{
-                  username: "",
-                  password: ""
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  this.submitForm(values, this.props.history);
-                  setSubmitting(false);
-                }}
-                validationSchema={LoginSchema}
-              >
-                {/* {this.showForm()}            */}
-                {props => this.showForm(props)}
-              </Formik>
-              <p class="mb-1">
-                <Link to="/password/forgot">I forgot my password</Link>
-              </p>
-              <p class="mb-0">
-                <Link to="/register">Register a new membership</Link>
-              </p>
-            </div>
-            {/* /.form-box */}
-          </div>
-          {/* /.card */}
+  return (
+    <div class="login-page">
+      <div className="register-box">
+        <div className="register-logo">
+          <a href="../../index2.html">
+            <b>Basic</b>POS
+          </a>
         </div>
+        <div className="card">
+          <div className="card-body register-card-body">
+            <p className="login-box-msg">Sign in to start your session</p>
+
+            <Formik
+              initialValues={{
+                username: "",
+                password: "",
+                recaptcha: "",
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                dispatch(loginActions.login(values, props.history));
+                setSubmitting(false);
+              }}
+              validationSchema={LoginSchema}
+            >
+              {/* {this.showForm()}            */}
+              {(props) => showForm(props)}
+            </Formik>
+            <p class="mb-1">
+              <Link to="/password/forgot">I forgot my password</Link>
+            </p>
+            <p class="mb-0">
+              <Link to="/register">Register a new membership</Link>
+            </p>
+          </div>
+          {/* /.form-box */}
+        </div>
+        {/* /.card */}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Login;

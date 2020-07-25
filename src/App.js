@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import * as loginActions from "./redux/actions/login.action";
+import { useDispatch, useSelector } from "react-redux";
 
 import Register from "./pages/RegisterPage";
 import Login from "./pages/LoginPage";
@@ -8,32 +10,25 @@ import Profile from "./pages/ProfilePage";
 import PasswordForgotPage from './pages/password/PasswordForgotPage';
 import PasswordResetPage from './pages/password/PasswordResetPage';
 
- 
-const isLoggedIn = () => {
-  return localStorage.getItem('TOKEN_KEY') != null;
-};
 
-// Verify if is Logged In with JWT
-// If it's not send so to LoginPage
-const SecuredRoute = ({ component: Component, ...rest }) => (
-    
-  <Route
-    {...rest}
-    render={props =>
-    
-      isLoggedIn() === true ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
+const App = (props) => {
+  // const {pathname} = this.props.location;
+  useSelector(({ loginReducer }) => loginReducer);
+  const SecuredRoute = ({ component: Component, ...rest }) => (
+    <Route
+      {...rest}
+      render={(props) =>
+        // ternary condition
 
-export default class App extends Component {
-  
-  render() {
-    // const {pathname} = this.props.location;
+        loginActions.isLoggedIn() === true ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
+  );
+
     return (
       <Router>
         <Switch>
@@ -45,10 +40,12 @@ export default class App extends Component {
             <Route exact path="/password/forgot" component={PasswordForgotPage} />
             <SecuredRoute path="/profile" component={Profile} />
             <SecuredRoute path="/dashboard" component={Dashboard} />
+            <Route path="/" exact component={Login} />
           </div>
         </Switch>
       </Router>
     );
-  }
+
 }
 
+export default App;
