@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 
 import Header from "../../../components/header";
-import Sidebar from "../../../components/sidebar";
 import Footer from "../../../components/footer";
 
 const CRUD_index = (props) => {
@@ -42,9 +41,9 @@ const CRUD_index = (props) => {
   return (
     <>
     <Header/>
-    <Sidebar/>
-    <div className="content-wrapper">
-      <div className="card-body table-responsive p-0">
+    <div className="container-fluid">
+      <div className="container">
+        <div className="page-container">
         <table className="table table-hover text-nowrap">
           <thead>
             <tr>
@@ -79,6 +78,7 @@ const CRUD_index = (props) => {
             )}
           </tbody>
         </table>
+        </div>
       </div>    
     </div>
     <Footer/>

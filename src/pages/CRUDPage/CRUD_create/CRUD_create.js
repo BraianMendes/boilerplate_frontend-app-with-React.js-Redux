@@ -6,8 +6,8 @@ import * as CRUDActions from "../../../redux/actions/crud.action";
 import { server } from "../../../redux/constants";
 
 import Header from "../../../components/header";
-import Sidebar from "../../../components/sidebar";
 import Footer from "../../../components/footer";
+import "./CRUD_create.css";
 
 const Create_Schema = Yup.object().shape({
   name: Yup.string()
@@ -110,34 +110,35 @@ const CRUDPage_create = (props) => {
     return (
         <>
           <Header/>
-          <Sidebar/>
-            <div className="content-wrapper">
-            <div class="login-page">
-              <div className="register-box">
-                <div className="card">
-                  <div className="card-body register-card-body">
-                    <p className="login-box-msg">Add Pos Machine Data</p>
-        
-                    <Formik
-                      initialValues={{
-                        alias: "",
-                        serial_number: "",
-                      }}
-                      onSubmit={(values, { setSubmitting }) => {
-                  
-                        dispatch(CRUDActions.create(values, props.history));
-                        setSubmitting(false);
-                      }}
-                    >
-                      
-                      {(props) => showForm(props)}
-                    </Formik>
+            <div className="container-fluid">
+              <div className="container">
+                <div className="page-container">
+                <div className="register-box">
+                  <div className="card">
+                    <div className="card-body register-card-body">
+                      <p className="login-box-msg">Add Pos Machine Data</p>
+          
+                      <Formik
+                        initialValues={{
+                          alias: "",
+                          serial_number: "",
+                        }}
+                        onSubmit={(values, { setSubmitting }) => {
+                    
+                          dispatch(CRUDActions.create(values, props.history));
+                          setSubmitting(false);
+                        }}
+                      >
+                        
+                        {(props) => showForm(props)}
+                      </Formik>
+                    </div>
+                    {/* /.form-box */}
                   </div>
-                  {/* /.form-box */}
+                  {/* /.card */}
                 </div>
-                {/* /.card */}
+                </div>
               </div>
-            </div>
             </div>          
           <Footer/>
         </>
