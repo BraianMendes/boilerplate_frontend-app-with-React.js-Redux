@@ -23,7 +23,7 @@ const Login = (props) => {
 
   useEffect(() => {
     if (localStorage.getItem(server.TOKEN_KEY) != null) {
-      return props.history.push("/dashboard");
+      return props.history.push("/home");
     }
     let notify = props.match.params["notify"];
     if (notify !== undefined) {
@@ -42,7 +42,7 @@ const Login = (props) => {
         if (res.data.result === "success") {
           localStorage.setItem("TOKEN_KEY", res.data.token);
           swal("Success!", res.data.message, "success").then((value) => {
-            history.push("/dashboard");
+            history.push("/home");
           });
         } else if (res.data.result === "error") {
           swal("Error!", res.data.message, "error");

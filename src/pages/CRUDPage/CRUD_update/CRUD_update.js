@@ -5,7 +5,6 @@ import * as crudActions from "../../../redux/actions/crud.action";
 import { server } from "../../../redux/constants";
 
 import Header from "../../../components/header";
-import Sidebar from "../../../components/sidebar";
 import Footer from "../../../components/footer";
 
 const CRUDPage_update = (props) => {
@@ -99,39 +98,43 @@ const CRUDPage_update = (props) => {
     };  
 
     return (
-        <>
+        <>   
         <Header/>
-        <Sidebar/>
 
-        <div class="login-page">
-          <div className="register-box">
-            <div className="card">
-              <div className="card-body register-card-body">
-                <p className="login-box-msg">Update Data</p>
-     
-                <Formik
-                  // enableReinitialize allows us to repopulate form again
-                  // because the form will load success until we send a request for getting data
-                  enableReinitialize={true}
-                  // we store data from API to state and initialize crudReducer.result as null
-                  initialValues={
-                    crudReducer.result
-                      ? crudReducer.result
-                      : { alias: "", serial_number: "" }
-                  }
-                  onSubmit={(values, { setSubmitting }) => {
-                    dispatch(crudActions.update(values, props.history));
-                    setSubmitting(false);
-                  }}
-                  // validationSchema={Create_Schema}
-                >
-                  {/* {this.showForm()}            */}
-                  {(props) => showForm(props)}
-                </Formik>
+
+        <div className="container-fluid">
+          <div className="container">
+            <div className="page-container">
+            <div className="register-box">
+              <div className="card">
+                <div className="card-body register-card-body">
+                  <p className="login-box-msg">Update Data</p>
+      
+                  <Formik
+                    // enableReinitialize allows us to repopulate form again
+                    // because the form will load success until we send a request for getting data
+                    enableReinitialize={true}
+                    // we store data from API to state and initialize crudReducer.result as null
+                    initialValues={
+                      crudReducer.result
+                        ? crudReducer.result
+                        : { alias: "", serial_number: "" }
+                    }
+                    onSubmit={(values, { setSubmitting }) => {
+                      dispatch(crudActions.update(values, props.history));
+                      setSubmitting(false);
+                    }}
+                    // validationSchema={Create_Schema}
+                  >
+                    {/* {this.showForm()}            */}
+                    {(props) => showForm(props)}
+                  </Formik>
+                </div>
+                {/* /.form-box */}
               </div>
-              {/* /.form-box */}
+              {/* /.card */}
             </div>
-            {/* /.card */}
+            </div>
           </div>
         </div>
 

@@ -6,7 +6,6 @@ import swal from 'sweetalert'
 import fs from 'fs'
 
 import Header from "../../components/header";
-import Sidebar from "../../components/sidebar";
 import Footer from "../../components/footer";
 
 const FILE_SIZE = 160 * 1024
@@ -317,75 +316,78 @@ class Profile extends Component {
     console.log(result)
     return (
       <>
-       <Header/>
-       <Sidebar/>
-      <div className='content-wrapper'>
-        <section className='content-header'>
-          <div className='container-fluid'>
-            <div className='row mb-2'>
-              <div className='offset-md-3 col-sm-8'>
-                <h1>Profile</h1>
-              </div>
-            </div>
-          </div>
-          {/* /.container-fluid */}
-        </section>
-
-        <section className='content'>
-          <div className='container-fluid'>
-            <div className='row'>
-              {/* left column */}
-              <div className='offset-md-3 col-md-6'>
-                {/* general form elements */}
-                <div className='card card-primary'>
-                  <div className='card-header'>
-                    <h3 className='card-title'>update profile</h3>
+        <Header/>
+        <div className='container-fluid'>
+          <div className="container">
+            <div className="page-container">
+              <section className='content-header'>
+                <div className='container-fluid'>
+                  <div className='row mb-2'>
+                    <div className='offset-md-3 col-sm-8'>
+                      <h1>Profile</h1>
+                    </div>
                   </div>
-                  {/* /.card-header */}
-                  {/* form start */}
-                  <Formik
-                    enableReinitialize={true}
-                    initialValues={
-                      result
-                        ? result
-                        : {
-                            id: '',
-                            username: '',
-                            email: '',
-                            first_name: '',
-                            last_name: '',
-                            phone: '',
-                            address: ''
-                          }
-                    }
-                    onSubmit={(values, { setSubmitting }) => {
-                      let formData = new FormData()
-                      formData.append('id', values._id)
-                      formData.append('username', values.username)
-                      formData.append('first_name', values.first_name)
-                      formData.append('last_name', values.last_name)
-                      formData.append('phone', values.phone)
-                      formData.append('address', values.address)
-                      formData.append('email', values.email)
-                      if (values.avatars) {
-                        formData.append('avatars', values.avatars)
-                      }
-                      console.log(values.avatars)
-                      this.submitForm(formData, this.props.history)
-                      setSubmitting(false)
-                    }}
-                    // validationSchema={ProfileSchema}
-                  >
-                    {props => this.showForm(props)}
-                  </Formik>
                 </div>
-                {/* /.card */}
-              </div>
+                {/* /.container-fluid */}
+              </section>
+
+              <section className='content'>
+                <div className='container-fluid'>
+                  <div className='row'>
+                    {/* left column */}
+                    <div className='offset-md-3 col-md-6'>
+                      {/* general form elements */}
+                      <div className='card card-primary'>
+                        <div className='card-header'>
+                          <h3 className='card-title'>update profile</h3>
+                        </div>
+                        {/* /.card-header */}
+                        {/* form start */}
+                        <Formik
+                          enableReinitialize={true}
+                          initialValues={
+                            result
+                              ? result
+                              : {
+                                  id: '',
+                                  username: '',
+                                  email: '',
+                                  first_name: '',
+                                  last_name: '',
+                                  phone: '',
+                                  address: ''
+                                }
+                          }
+                          onSubmit={(values, { setSubmitting }) => {
+                            let formData = new FormData()
+                            formData.append('id', values._id)
+                            formData.append('username', values.username)
+                            formData.append('first_name', values.first_name)
+                            formData.append('last_name', values.last_name)
+                            formData.append('phone', values.phone)
+                            formData.append('address', values.address)
+                            formData.append('email', values.email)
+                            if (values.avatars) {
+                              formData.append('avatars', values.avatars)
+                            }
+                            console.log(values.avatars)
+                            this.submitForm(formData, this.props.history)
+                            setSubmitting(false)
+                          }}
+                          // validationSchema={ProfileSchema}
+                        >
+                          {props => this.showForm(props)}
+                        </Formik>
+                      </div>
+                      {/* /.card */}
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
-        </section>
-      </div>
-      <Footer/>
+        </div>
+        <Footer/>
       </>
     )
   }
