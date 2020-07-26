@@ -1,41 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import * as passwordForgotAction from "./../../../redux/actions/forgotpassword.action";
+import { useDispatch } from "react-redux";
+
 const PasswordForgotSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Email is Required")
+  email: Yup.string().email("Invalid email").required("Email is Required"),
 });
- 
-class PasswordForgotPage extends Component {
-  constructor(props) {
-    super(props);
- 
-    this.state = {
-      error_message: null,
-    };
-  }
- 
-  submitForm = async formData => {
-    await axios
-      .post("http://localhost:8080/password/reset", formData)
-      .then(res => {
-        console.log(res.data.result);
-        if (res.data.result === "success") {
-          swal("Success!", res.data.message, "success")
-        } else if (res.data.result === "error") {
-          swal("Error!", res.data.message, "error");
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        swal("Error!", "Unexpected error", "error");
-      });
-  };
-  showForm = ({
+
+const PasswordForgotPage = (props) => {
+  const dispatch = useDispatch();
+
+  const showForm = ({
     values,
     errors,
     touched,
@@ -43,7 +20,7 @@ class PasswordForgotPage extends Component {
     handleSubmit,
     onSubmit,
     isSubmitting,
-    setFieldValue
+    setFieldValue,
   }) => {
     return (
       <form role="form" onSubmit={handleSubmit}>
@@ -69,7 +46,6 @@ class PasswordForgotPage extends Component {
             ) : null}
           </div>
         </div>
-      
         <div class="row">
           <div class="col-12">
             <button
@@ -84,47 +60,50 @@ class PasswordForgotPage extends Component {
       </form>
     );
   };
- 
-  render() {
-    return (
-      <div className="login-page">
-        <div className="login-box">
-          <div className="login-logo">
-            <a href="#">
-              <b>Basic</b>POS
-            </a>
-          </div>
-          {/* /.login-logo */}
-          <div className="card">
-            <div className="card-body login-card-body">
-              <p className="login-box-msg">
-                You forgot your password? Here you can easily retrieve a new
-                password.
-              </p>
-              <Formik
-                initialValues={{
-                  username: ""
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  this.submitForm(values, this.props.history);
-                  setSubmitting(false);
-                }}
-                validationSchema={PasswordForgotSchema}
-              >
-                {/* {this.showForm()}            */}
-                {props => this.showForm(props)}
-              </Formik>
+
+  return (
+    <div className="login-page">
+      <div className="login-box">
+        <div className="login-logo">
+          <a href="#">
+            <b>Basic</b>POS
+          </a>
+        </div>
+        {/* /.login-logo */}
+        <div className="card">
+          <div className="card-body login-card-body">
+            <p className="login-box-msg">
+              You forgot your password? Here you can easily retrieve a new
+              password.
+            </p>
+            <Formik
+              initialValues={{
+                email: "",
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                dispatch(
+                  passwordForgotAction.forgotpassword(values, props.history)
+                );
+                setSubmitting(false);
+              }}
+              validationSchema={PasswordForgotSchema}
+            >
+              {/* {this.showForm()}            */}
+              {(props) => showForm(props)}
+            </Formik>
+            <p className="mb-0">
               <Link to="/login">Login</Link>
-              <p className="mb-0">
-                <Link to="/register">Register a new membership</Link>
-              </p>
-            </div>
-            {/* /.login-card-body */}
+            </p>
+
+            <p className="mb-0">
+              <Link to="/register">Register a new membership</Link>
+            </p>
           </div>
+          {/* /.login-card-body */}
         </div>
       </div>
-    );
-  }
-}
- 
+    </div>
+  );
+};
+
 export default PasswordForgotPage;
