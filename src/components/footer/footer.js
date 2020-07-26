@@ -3,15 +3,15 @@ import React, { Component } from "react";
 class Footer extends Component {
   render() {
     return (
-      <footer className="main-footer">
+      <div className="" >
         <div className="float-right d-none d-sm-block">
-          <b>Version</b> 3.0.2-pre
+          <b>Version</b> 0.0.1
         </div>
         <strong>
-          Copyright © 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.
+          Copyright © 2020 <a href="#">Empresa</a>.
         </strong>{" "}
         All rights reserved.
-      </footer>
+      </div>
     );
   }
 }
