@@ -1,18 +1,23 @@
-import React, { Component } from "react";
+import React from "react";
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import * as loginActions from "./redux/actions/login.action";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import "./assets/css/index.css";
 
 import Register from "./pages/RegisterPage";
 import Login from "./pages/LoginPage";
-import Dashboard from "./pages/DashboardPage";
+import HomePage from "./pages/HomePage";
 import Profile from "./pages/ProfilePage";
 import PasswordForgotPage from './pages/password/PasswordForgotPage';
 import PasswordResetPage from './pages/password/PasswordResetPage';
+// CRUD template
+import CRUDPage_create from './pages/CRUDPage/CRUD_create';
+import CRUDPage_index from './pages/CRUDPage/CRUD_index';
+import CRUDPage_update from './pages/CRUDPage/CRUD_update';
 
 
 const App = (props) => {
-  // const {pathname} = this.props.location;
   useSelector(({ loginReducer }) => loginReducer);
   const SecuredRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -33,14 +38,24 @@ const App = (props) => {
       <Router>
         <Switch>
           <div>
+            {/* LandingPage */}
+            <Route exact path="/"  component={Login} />
+
+            {/* Auth Pages */}
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            {/* <Route exact path="/login/:notify?" component={Login} /> */}
+            <Route exact path="/login/:notify?" component={Login} />
             <Route exact path="/password-reset/:token" component={PasswordResetPage} />
             <Route exact path="/password/forgot" component={PasswordForgotPage} />
-            <SecuredRoute path="/profile" component={Profile} />
-            <SecuredRoute path="/dashboard" component={Dashboard} />
-            <Route path="/" exact component={Login} />
+
+            {/* User Pages */}
+            <SecuredRoute exact path="/profile" component={Profile} />
+            <SecuredRoute exact path="/home" component={HomePage} />
+
+            {/* Crud Pages */}
+            <SecuredRoute exact path="/crud/update/:id" component={CRUDPage_update} />
+            <SecuredRoute exact path="/crud/new" component={CRUDPage_create} />
+            <SecuredRoute exact path="/crud/" component={CRUDPage_index} />
           </div>
         </Switch>
       </Router>
