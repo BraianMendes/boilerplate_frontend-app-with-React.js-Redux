@@ -2,17 +2,21 @@ import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import axios from 'axios'
 
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
-import { Typography, IconButton} from '@material-ui/core';
+import { Typography, IconButton, Button } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import * as loginActions from "../../redux/actions/login.action";
 import { server } from "../../redux/constants";
+import ProfileEmptyImage from '../../assets/images/user.png';
 import { useStyles, StyledAppbar, StyledToolbar, StyledDrawer, StyledImgProfileClosed, StyledImgProfileOpened, StyledMain, StyledAppBarDiv, StyledMainDiv, StyledCard } from './styles.js';
 
 
 const LayoutApp = ({ children }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
   const [response, setResponse] = '';
 
   const handleDrawerOpen = () => {
@@ -24,8 +28,12 @@ const LayoutApp = ({ children }) => {
     await axios
       .get('http://localhost:8080/profile/id/' + id)
       .then(response => {
+        if (response.data.avatars != undefined){
         document.getElementById('avatars').src =
-          'http://localhost:8080/images/' + response.data.avatars
+          'http://localhost:8080/images/' + response.data.avatars}
+        else {
+          document.getElementById('avatars').src = ProfileEmptyImage;
+        }
         // profile.setAttribute("src",);
       })
       .catch(error => {
@@ -48,6 +56,11 @@ const LayoutApp = ({ children }) => {
     return JSON.parse(jsonPayload)
   }
 
+  const logout = () => {
+    localStorage.clear();
+    history.push("/login")
+  }
+
   // Retrieve the user id and get user data
   useEffect(() => {
     let { id } = parseJwt()
@@ -62,11 +75,13 @@ const LayoutApp = ({ children }) => {
           open ? 
                   <StyledImgProfileOpened 
                     id="avatars"
-                    src={ values.file_obj != null ? values.file_obj : 'http://localhost:8080/images/user.png'}
+                    // src={ values.file_obj !== null ? values.file_obj : ProfileEmptyImage}
+                    src={ProfileEmptyImage}
                   /> : 
                   <StyledImgProfileClosed 
                     id="avatars"
-                    src={ values.file_obj != null ? values.file_obj : 'http://localhost:8080/images/user.png'}
+                    // src={ values.file_obj != null ? values.file_obj : ProfileEmptyImage}
+                    src={ProfileEmptyImage}
                   />
         }
         </Link>
@@ -75,12 +90,13 @@ const LayoutApp = ({ children }) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{boxShadow: "none"}}>
       <StyledAppbar
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
+        style={{boxShadow: "none"}}
       >
         <StyledToolbar>
           <IconButton
@@ -93,8 +109,11 @@ const LayoutApp = ({ children }) => {
             <FontAwesomeIcon icon="bars" />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Master Shield
+            Clinicus
           </Typography>
+          <Button className="mt-1 ml-auto" style={{color: 'white'}} onClick={() => {logout()}}>
+            Sair
+          </Button>
         </StyledToolbar>
       </StyledAppbar>
       <StyledDrawer
@@ -121,15 +140,15 @@ const LayoutApp = ({ children }) => {
               </IconButton>
               <IconButton className="m-3" row onClick={''}>
                 <FontAwesomeIcon className="ml-1" icon="street-view" />
-                <Typography className="ml-3">Personagens</Typography>
+                <Typography className="ml-3">Pacientes</Typography>
               </IconButton>
               <IconButton className="m-3" row onClick={''}>
-                <FontAwesomeIcon icon="dragon" />
-                <Typography className="ml-3">Monstros</Typography>
+                <FontAwesomeIcon className="ml-1" icon="calendar-check" />
+                <Typography className="ml-4">Consultas</Typography>
               </IconButton>
               <IconButton className="m-3" row onClick={''}>
                 <FontAwesomeIcon className="ml-1" icon="shield-alt" />
-                <Typography className="ml-3">Equipamentos</Typography>
+                <Typography className="ml-3">Informação</Typography>
               </IconButton>
           </Grid>
 

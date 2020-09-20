@@ -9,7 +9,7 @@ import "./assets/css/index.css";
 // Fas Icons Import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faBars, faDragon, faStreetView, faHome, faShieldAlt } from '@fortawesome/free-solid-svg-icons'
+import { faBars,faStreetView, faHome, faShieldAlt, faCalendarCheck } from '@fortawesome/free-solid-svg-icons'
 
 // Pages 
 import LandingPage from './pages/LandingPage';
@@ -26,9 +26,10 @@ import ProfilePage from "./pages/app/profile/ProfilePage";
 import CRUDPage_create from './pages/app/CRUDPage/CRUD_create';
 import CRUDPage_index from './pages/app/CRUDPage/CRUD_index';
 import CRUDPage_update from './pages/app/CRUDPage/CRUD_update';
+import LoginRegisterPage from './pages/auth/LoginRegisterPage';
 
 // Start Icons
-library.add(fab, faBars, faDragon, faStreetView, faHome, faShieldAlt)
+library.add(fab, faBars, faStreetView, faHome, faShieldAlt, faCalendarCheck)
 
 // Initialize Google Analytics
 ReactGA.initialize(process.env.REACT_APP_GA_CODE);
@@ -56,7 +57,7 @@ const App = () => {
 
           {/* Auth Pages */}
           <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/login" component={LoginRegisterPage} />
           <Route exact path="/login/:notify?" component={Login} />
           <Route exact path="/password-reset/:token" component={PasswordResetPage} />
           <Route exact path="/password/forgot" component={PasswordForgotPage} />

@@ -64,10 +64,14 @@ export const useStyles = makeStyles((theme) => ({
 
 export const StyledAppbar = styled(AppBar)`
   box-shadow: none;
+
+  .MuiPaper-elevation4{
+    box-shadow:none;
+  }
 `
 
 export const StyledToolbar = styled(Toolbar)`
-  background-color: #0D0D0D;
+  background-color: #3282B8;
 `
 export const StyledDrawer = styled(Drawer)`
   div{
@@ -110,7 +114,7 @@ export const StyledAppBarDiv = styled.div`
   top: 0;
   height: 33.5vh;
   width: 100%;
-  background-color: #0D0D0D;
+  background-color: #3282B8;
 `
 
 export const StyledMainDiv = styled.div`
@@ -119,7 +123,7 @@ export const StyledMainDiv = styled.div`
   height: 25vh;
   width: 100%;
   margin-bottom: 5vh;
-  background-color: #0D0D0D;
+  background-color: #3282B8;
 `
 
 export const StyledCard = styled(Card)`
