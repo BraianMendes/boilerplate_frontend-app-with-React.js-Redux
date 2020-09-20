@@ -59,11 +59,14 @@ import {
       var decodedToken = jwt.decode(token, { complete: true });
       var dateNow = new Date();
   
-      if (decodedToken.exp <= dateNow.getTime()) {
-        return false;
-      } else {
-        return true;
+      if (decodedToken != null){
+        if (decodedToken.exp <= dateNow.getTime()) {
+          return false;
+        } else {
+          return true;
+        }
       }
+
     } else {
       return false;
     }
